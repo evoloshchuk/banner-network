@@ -1,0 +1,39 @@
+update-1:
+  cron: "25 * * * *"
+  class: UpdateJob
+  queue: update
+  args:
+    - ./data/1/impressions_1.csv
+    - ./data/1/conversions_1.csv
+    - ./data/1/clicks_1.csv
+  description: Update campaign banners to show based on the available data
+
+update-2:
+  cron: "26 * * * *"
+  class: UpdateJob
+  queue: update
+  args:
+    - ./data/2/impressions_2.csv
+    - ./data/2/conversions_2.csv
+    - ./data/2/clicks_2.csv"
+  description: Update campaign banners to show based on the available data
+
+update-3:
+  cron: "27 * * * *"
+  class: UpdateJob
+  queue: update
+  args:
+    - ./data/3/impressions_3.csv
+    - ./data/3/conversions_3.csv
+    - ./data/3/clicks_3.csv"
+  description: Update campaign banners to show based on the available data
+
+update-4:
+  cron: "28 * * * *"
+  class: UpdateJob
+  queue: update
+  args:
+    - ./data/4/impressions_4.csv
+    - ./data/4/conversions_4.csv
+    - ./data/4/clicks_1.csv
+  description: Update campaign banners to show based on the available data

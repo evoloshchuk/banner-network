@@ -1,0 +1,15 @@
+source 'https://rubygems.org'
+
+ruby '2.1.0'
+
+gem 'sinatra', '1.4.3'
+gem 'thin', '1.6.1'
+gem 'shotgun', '0.9'
+gem 'resque', '1.25.1'
+gem 'resque-scheduler', '2.3.1', :require => 'resque_scheduler'
+gem 'resque-web', '0.0.4', require: 'resque_web'
+gem 'redis-objects', '0.8.0'
+gem 'rspec', '2.14.1'
+gem 'rack-test', '0.6.2'
+gem 'foreman', '0.63.0'
+gem 'mock_redis', '0.10.0'
