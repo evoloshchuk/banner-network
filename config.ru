@@ -1,5 +1,5 @@
-# encoding: utf-8
+# This file is used by Rack-based servers to start the application.
 
-require_relative "app"
+require ::File.expand_path(File.dirname(__FILE__),  'app')
 
 run Application.new

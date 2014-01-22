@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require_relative '../spec_helper'
 
 describe Campaign do
@@ -28,7 +26,7 @@ describe Campaign do
     end
   end
 
-  describe  ".get_banner_id(id)" do
+  describe  ".get_banner_id(id, excluded_banner_id)" do
     context "no banners available" do
       it "returns nil" do
         campaign = Campaign.get_by_id(1)
@@ -43,6 +41,9 @@ describe Campaign do
       it "returns banner id" do
         Campaign.get_by_id(1).get_banner_id.should eql 150
       end
+      it "returns banner id" do
+        Campaign.get_by_id(1).get_banner_id(150).should eql 150
+      end
     end
     context "few banners available" do
       before do
@@ -51,6 +52,9 @@ describe Campaign do
       end
       it "returns banner id" do
         [151, 152, 153].should include Campaign.get_by_id(1).get_banner_id
+      end
+      it "returns banner id" do
+        [151, 152].should include Campaign.get_by_id(1).get_banner_id(153)
       end
     end
   end

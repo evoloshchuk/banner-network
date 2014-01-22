@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Application < Sinatra::Application
 
   # Display a banner for the given campaign id.
@@ -9,21 +7,18 @@ class Application < Sinatra::Application
   # to the actual banner, which will be cacheable.
   get '/campaigns/:campaign_id' do |campaign_id|
     response['Cache-Control'] = "no-cache, must-revalidate"
-    if campaign_id =~ /^\d+$/
-      campaign = Campaign.get_by_id(campaign_id.to_i)
-      if campaign
-        banner_id = campaign.get_banner_id
-        if banner_id
-          redirect to("/banners/#{banner_id}")
-        else
-          204 # No Content
-        end
-      else
-        404 # Not Found
-      end
+    halt 404 unless campaign_id =~ /^\d+$/ # Not Found
+    campaign = Campaign.get_by_id(campaign_id.to_i)
+    halt 404 unless campaign # Not Found
+    if session.has_key? campaign_id
+      last_shown_banner_id = session[campaign_id]
     else
-      404 # Not Found
+      last_shown_banner_id = nil
     end
+    banner_id = campaign.get_banner_id last_shown_banner_id
+    halt 204 unless banner_id # No Content
+    session[campaign_id] = banner_id
+    redirect to("/banners/#{banner_id}")
   end
 
 end

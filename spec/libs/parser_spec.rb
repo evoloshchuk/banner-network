@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require_relative '../spec_helper'
 
 describe Parser do
@@ -22,9 +20,20 @@ describe Parser do
       arr.join("\n")
     end
 
-    @impressions_str = "banner_id,campaign_id\n" + to_csv(impressions_arr)
-    @clicks_str = "conversion_id,click_id,revenue\n" + to_csv(conversions_arr)
-    @conversions_str = "click_id,banner_id,campaign_id\n" + to_csv(clicks_arr)
+    @impressions_f = Tempfile.new("impressions")
+    @impressions_f.write("banner_id,campaign_id\n" +
+                             to_csv(impressions_arr))
+    @impressions_f.close
+
+    @clicks_f = Tempfile.new("clicks")
+    @clicks_f.write("click_id,banner_id,campaign_id\n" +
+                        to_csv(clicks_arr))
+    @clicks_f.close
+
+    @conversions_f = Tempfile.new("conversions")
+    @conversions_f.write("conversion_id,click_id,revenue\n" +
+                             to_csv(conversions_arr))
+    @conversions_f.close
 
     @expected_impressions = {
         1001 => {
@@ -52,10 +61,12 @@ describe Parser do
   end
 
   describe  ".parse_ios(impressions_io, conversions_io, clicks_io)" do
-    subject { Parser.parse_ios(impressions_io, conversions_io, clicks_io) }
-    let(:impressions_io) { StringIO.new(@impressions_str) }
-    let(:conversions_io) { StringIO.new(@clicks_str) }
-    let(:clicks_io) { StringIO.new(@conversions_str) }
+    subject {
+      Parser.parse_filenames(impressions_fn, clicks_fn, conversions_fn)
+    }
+    let(:impressions_fn) { @impressions_f.path }
+    let(:clicks_fn) { @clicks_f.path }
+    let(:conversions_fn) { @conversions_f.path }
     it { should == @expected_impressions }
   end
 

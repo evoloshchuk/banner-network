@@ -1,4 +1,6 @@
-# encoding: utf-8
-
 require_relative 'campaigns'
 require_relative 'banners'
+
+not_found do
+  ''
+end

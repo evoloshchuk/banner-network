@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'rspec'
 require 'rack/test'
 require 'mock_redis'

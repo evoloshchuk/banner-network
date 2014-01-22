@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'resque/tasks'
 require 'resque_scheduler/tasks'
 require 'rake/testtask'
@@ -19,3 +17,13 @@ end
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
+
+
+task "warmup" do
+  require_relative 'jobs/init'
+  quarter = 1 + Time.now.min / 15
+  impressions_fn = "./data/#{quarter}/impressions_#{quarter}.csv"
+  clicks_fn = "./data/#{quarter}/clicks_#{quarter}.csv"
+  conversions_fn = "./data/#{quarter}/conversions_#{quarter}.csv"
+  UpdateJob.perform(impressions_fn, clicks_fn, conversions_fn)
+end
