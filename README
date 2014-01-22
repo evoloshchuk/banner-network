@@ -1,3 +1,8 @@
 gem install bundler
 bundle install
 foreman start
+
+http://gentle-gorge-2760.herokuapp.com/
+
+env RACK_ENV=development foreman start
+rake warmup RACK_ENV=development

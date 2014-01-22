@@ -6,7 +6,7 @@ require_relative 'controllers/init'
 require_relative 'libs/init'
 require_relative 'jobs/init'
 
-$redis_server = ENV.fetch("REDISTOGO_URL", 'http://127.0.0.1:6379')
+$redis_server = ENV.fetch("REDISTOGO_URL", 'http://127.0.0.1:6363')
 Redis.current = Redis.new(:url => $redis_server)
 
 class Application < Sinatra::Application

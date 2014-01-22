@@ -1,6 +1,7 @@
 require 'resque/tasks'
 require 'resque_scheduler/tasks'
 require 'rake/testtask'
+require_relative 'app'
 
 task "resque:setup" do
   require 'resque'
@@ -9,7 +10,7 @@ task "resque:setup" do
   require 'redis'
   require 'yaml'
 
-  Resque.redis = Redis.new
+  Resque.redis = Redis.current
   Resque.schedule = YAML.load_file('resque_schedule.yml')
 
   require_relative 'jobs/init'
@@ -20,7 +21,6 @@ RSpec::Core::RakeTask.new(:spec)
 
 
 task "warmup" do
-  require_relative 'app'
   require_relative 'jobs/init'
   quarter = 1 + Time.now.min / 15
   impressions_fn = "./data/#{quarter}/impressions_#{quarter}.csv"
