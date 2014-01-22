@@ -23,6 +23,24 @@ describe "GET '/campaign/:campaign_id'" do
       last_response.headers['Cache-Control'].should == cache_control
       last_response.location.should match "/banners/1[67]0"
     end
+    context "different banner for the subsequent request" do
+      context "one banner available for campaign" do
+        it "redirects to the same banner twice" do
+          get "/campaigns/1"
+          last_response.location.should include "/banners/150"
+          get "/campaigns/1"
+          last_response.location.should include "/banners/150"
+        end
+      end
+      context "few banner available for campaign" do
+        it "redirects to the different banners" do
+          get "/campaigns/2"
+          first_redirect = last_response.location
+          get "/campaigns/2"
+          last_response.location.should_not == first_redirect
+        end
+      end
+    end
   end
 
   context "an existing campaign with no data available" do

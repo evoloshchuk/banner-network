@@ -1,10 +1,10 @@
 require 'rspec'
 require 'rack/test'
 require 'mock_redis'
-require_relative '../app'
 
-# Set the Sinatra environment
-set :environment, :test
+ENV['RACK_ENV'] = 'test'
+
+require_relative '../app'
 
 # Add an app method for RSpec
 def app
