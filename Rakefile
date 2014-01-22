@@ -20,6 +20,7 @@ RSpec::Core::RakeTask.new(:spec)
 
 
 task "warmup" do
+  require_relative 'app'
   require_relative 'jobs/init'
   quarter = 1 + Time.now.min / 15
   impressions_fn = "./data/#{quarter}/impressions_#{quarter}.csv"
