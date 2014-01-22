@@ -21,7 +21,7 @@ class Application < Sinatra::Application
   enable :logging
 
   configure :production do
-    set :port, ENV['port']
+    set :port, ENV['PORT']
   end
 
   configure :production, :development do
