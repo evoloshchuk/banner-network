@@ -41,6 +41,7 @@ class Campaign
 
   # Public: Saves the available banners for campaign
   def update(ids)
+    banner_ids.clear
     banner_ids << ids
   end
 

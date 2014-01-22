@@ -59,4 +59,30 @@ describe Campaign do
     end
   end
 
+  describe  ".update(ids)" do
+    context "have not been called yet" do
+      it "returns nil" do
+        Campaign.get_by_id(1).get_banner_id.should be_nil
+      end
+    end
+    context "have been called once" do
+      before do
+        campaign = Campaign.get_by_id 1
+        campaign.update([175])
+      end
+      it "returnss banner_id" do
+        Campaign.get_by_id(1).get_banner_id.should eql 175
+      end
+    end
+    context "have been called few times" do
+      before do
+        campaign = Campaign.get_by_id 1
+        campaign.update([175])
+        campaign.update([176])
+      end
+      it "returnss banner_id" do
+        Campaign.get_by_id(1).get_banner_id(176).should eql 176
+      end
+    end
+  end
 end
