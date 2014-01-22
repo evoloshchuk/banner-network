@@ -12,6 +12,10 @@ class Application < Sinatra::Application
 
   enable :logging
 
+  configure :production do
+    set :port, ENV['port']
+  end
+
   configure :production, :development do
     use Rack::Session::Moneta, :store => :Redis
   end
