@@ -6,7 +6,15 @@ require_relative 'controllers/init'
 require_relative 'libs/init'
 require_relative 'jobs/init'
 
-Redis.current = Redis.new(:host => '127.0.0.1', :port => 6379)
+configure :production do
+  @redis_server = ENV["REDISTOGO_URL"]
+end
+
+configure :development do
+  @redis_server = 'http://127.0.0.1:6379'
+end
+
+Redis.current = Redis.new(:url => @redis_server)
 
 class Application < Sinatra::Application
 
@@ -17,7 +25,7 @@ class Application < Sinatra::Application
   end
 
   configure :production, :development do
-    use Rack::Session::Moneta, :store => :Redis
+    use Rack::Session::Moneta, :store => :Redis, :server => @redis_server
   end
   configure :test do
     use Rack::Session::Moneta, :store => :Memory
