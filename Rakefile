@@ -11,7 +11,9 @@ task "resque:setup" do
   require 'yaml'
 
   Resque.redis = Redis.current
-  Resque.schedule = YAML.load_file('resque_schedule.yml')
+  resque_schedule = File.open("resque_schedule.yml").read
+  resque_schedule = resque_schedule % {root: settings.root}
+  Resque.schedule = YAML.load(resque_schedule)
 
   require_relative 'jobs/init'
 end
@@ -23,8 +25,9 @@ RSpec::Core::RakeTask.new(:spec)
 task "warmup" do
   require_relative 'jobs/init'
   quarter = 1 + Time.now.min / 15
-  impressions_fn = "./data/#{quarter}/impressions_#{quarter}.csv"
-  clicks_fn = "./data/#{quarter}/clicks_#{quarter}.csv"
-  conversions_fn = "./data/#{quarter}/conversions_#{quarter}.csv"
+  root = settings.root
+  impressions_fn = "#{root}/data/#{quarter}/impressions_#{quarter}.csv"
+  clicks_fn = "#{root}/data/#{quarter}/clicks_#{quarter}.csv"
+  conversions_fn = "#{root}/data/#{quarter}/conversions_#{quarter}.csv"
   UpdateJob.perform(impressions_fn, clicks_fn, conversions_fn)
 end
