@@ -131,7 +131,6 @@ DEPENDENCIES
   foreman (= 0.63.0)
   mock_redis (= 0.10.0)
   moneta (= 0.7.20)
-  rack-test (= 0.6.2)
   redis-objects (= 0.8.0)
   resque (= 1.25.1)
   resque-scheduler (= 2.3.1)

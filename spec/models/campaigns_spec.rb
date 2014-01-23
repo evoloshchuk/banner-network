@@ -70,7 +70,7 @@ describe Campaign do
         campaign = Campaign.get_by_id 1
         campaign.update([175])
       end
-      it "returnss banner_id" do
+      it "returns banner_id" do
         Campaign.get_by_id(1).get_banner_id.should eql 175
       end
     end
@@ -80,7 +80,7 @@ describe Campaign do
         campaign.update([175])
         campaign.update([176])
       end
-      it "returnss banner_id" do
+      it "returns banner_id" do
         Campaign.get_by_id(1).get_banner_id(176).should eql 176
       end
     end
