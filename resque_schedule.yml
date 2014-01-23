@@ -19,7 +19,7 @@ update-2:
   queue: update
   args:
     - %{root}/data/2/impressions_2.csv
-    - %{root}/data/2/clicks_2.csv"
+    - %{root}/data/2/clicks_2.csv
     - %{root}/data/2/conversions_2.csv
   description: Update campaign banners to show based on the available data
 
@@ -29,7 +29,7 @@ update-3:
   queue: update
   args:
     - %{root}/data/3/impressions_3.csv
-    - %{root}/data/3/clicks_3.csv"
+    - %{root}/data/3/clicks_3.csv
     - %{root}/data/3/conversions_3.csv
   description: Update campaign banners to show based on the available data
 
@@ -39,6 +39,6 @@ update-4:
   queue: update
   args:
     - %{root}/data/4/impressions_4.csv
-    - %{root}/data/4/clicks_1.csv
+    - %{root}/data/4/clicks_4.csv
     - %{root}/data/4/conversions_4.csv
   description: Update campaign banners to show based on the available data
