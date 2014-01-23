@@ -26,8 +26,10 @@ task "resque:setup" do
 end
 
 # Configure RSpec task.
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
+task :spec do
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
+end
 
 # Configure warmup task.
 task "warmup" do
