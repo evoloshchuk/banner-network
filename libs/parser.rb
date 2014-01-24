@@ -34,25 +34,25 @@ module Parser
   #           A banner performance Hash - a Hash with keys :revenue and
   #           :clicks and corresponding values.
   def self.parse_filenames(impressions_fn, clicks_fn, conversions_fn)
-    parser = CsvParser.new(File.open(impressions_fn),
-                           File.open(clicks_fn),
-                           File.open(conversions_fn))
+    parser = CsvParser.new(impressions_fn, clicks_fn,conversions_fn)
     parser.parse
   end
+
+  private
 
   # Internal: CSV data files parser.
   class CsvParser
 
     # Internal: Initialize a CsvParser.
     #
-    # impressions_io - An IO object with impressions data.
-    # clicks_io - An IO object with clicks data.
-    # conversions_io - An IO object with conversions data.
-    def initialize(impressions_io, clicks_io, conversions_io)
+    # impressions_fn - An filename of CSV-file with impressions data.
+    # clicks_fn - An filename of CSV-file with clicks data.
+    # conversions_fn - An filename of CSV-file with conversions data.
+    def initialize(impressions_fn, clicks_fn, conversions_fn)
       options = {:headers => :first_row, :return_headers => false}
-      @impressions_csv = CSV.new(impressions_io, options)
-      @clicks_csv = CSV.new(clicks_io, options)
-      @conversions_csv = CSV.new(conversions_io, options)
+      @impressions_csv = CSV.open(impressions_fn, options)
+      @clicks_csv = CSV.open(clicks_fn, options)
+      @conversions_csv = CSV.open(conversions_fn, options)
     end
 
     # Public: Parse the CSV IO and build a an impressions Hash.
@@ -61,19 +61,17 @@ module Parser
     def parse
       impressions = {}
 
-      impressions do |campaign_id, banner_id|
-        unless impressions.has_key? campaign_id
-          impressions[campaign_id] = {}
-        end
+      read_impressions do |campaign_id, banner_id|
+        impressions[campaign_id] = {} unless impressions.has_key? campaign_id
         impressions[campaign_id][banner_id] = {:clicks => 0, :revenue => 0}
       end
 
       conversions = Hash.new(0)
-      conversions do |click_id, revenue|
+      read_conversions do |click_id, revenue|
         conversions[click_id] = revenue
       end
 
-      clicks do |campaign_id, banner_id, click_id|
+      read_clicks do |campaign_id, banner_id, click_id|
         impressions[campaign_id][banner_id][:clicks] += 1
         impressions[campaign_id][banner_id][:revenue] += conversions[click_id]
       end
@@ -84,21 +82,21 @@ module Parser
     private
 
     # Internal: Reads conversions data row by row from csv file.
-    def conversions
+    def read_conversions
       @conversions_csv.each do |row|
         yield row['click_id'].to_i, row['revenue'].to_f
       end
     end
 
     # Internal: Reads impressions data row by row from csv file.
-    def impressions
+    def read_impressions
       @impressions_csv.each do |row|
         yield row['campaign_id'].to_i, row['banner_id'].to_i
       end
     end
 
     # Internal: Reads click data row by row from csv file.
-    def clicks
+    def read_clicks
       @clicks_csv.each do |row|
         yield row['campaign_id'].to_i, row['banner_id'].to_i,
             row['click_id'].to_i

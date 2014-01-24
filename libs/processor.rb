@@ -34,9 +34,7 @@ module Processor
         if row[1][:revenue] > 0
           banner_ids.push(row[0])
           banner_cnt += 1
-          if banner_cnt == 10
-            break
-          end
+          break if banner_cnt == 10
         elsif banner_cnt < 5
           banner_ids.push(row[0])
           banner_cnt += 1

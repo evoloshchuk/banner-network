@@ -1,5 +1,6 @@
-require_relative '../libs/init'
-require_relative '../models/init'
+require_relative '../libs/parser'
+require_relative '../libs/processor'
+require_relative '../models/campaigns'
 
 # This job updates campaign's banners to be displayed based on the data
 # from the provided files.
@@ -17,9 +18,7 @@ class UpdateJob
     campaigns_banners = Processor.process_impressions(impressions)
     campaigns_banners.each do |campaign_id, banner_ids|
       campaign = Campaign.get_by_id campaign_id
-      if campaign
-        campaign.update(banner_ids)
-      end
+      campaign.update(banner_ids) if campaign
     end
   end
 

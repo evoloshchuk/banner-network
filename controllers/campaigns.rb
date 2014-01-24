@@ -7,18 +7,28 @@ class Application < Sinatra::Application
   # to the actual banner, which will be cacheable.
   get '/campaigns/:campaign_id' do |campaign_id|
     response['Cache-Control'] = "no-cache, must-revalidate"
-    halt 404 unless campaign_id =~ /^\d+$/ # Not Found
-    campaign = Campaign.get_by_id(campaign_id.to_i)
+    campaign = get_campaign(campaign_id)
     halt 404 unless campaign # Not Found
-    if session.has_key? campaign_id
-      last_shown_banner_id = session[campaign_id]
+    target_banner_id = get_target_banner_id(campaign)
+    halt 204 unless target_banner_id # No Content
+    redirect to("/banners/#{target_banner_id}")
+  end
+
+  private
+
+  def get_campaign(campaign_id)
+    Campaign.get_by_id(campaign_id.to_i) if campaign_id =~ /^\d+$/
+  end
+
+  def get_target_banner_id(campaign)
+    if session.has_key? campaign.id
+      last_shown_banner_id = session[campaign.id]
     else
       last_shown_banner_id = nil
     end
-    banner_id = campaign.get_banner_id last_shown_banner_id
-    halt 204 unless banner_id # No Content
-    session[campaign_id] = banner_id
-    redirect to("/banners/#{banner_id}")
+    target_banner_id = campaign.get_banner_id last_shown_banner_id
+    session[campaign.id] = target_banner_id if target_banner_id
+    target_banner_id
   end
 
 end
