@@ -1,3 +1,7 @@
-not_found do
-  ''
+class Application < Sinatra::Application
+
+  not_found do
+    ''
+  end
+
 end

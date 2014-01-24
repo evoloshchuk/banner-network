@@ -7,7 +7,7 @@ class Application < Sinatra::Application
   enable :logging
 
   configure :production, :development do
-    uri = URI.parse($config.redis_url)
+    uri = URI.parse(CONFIG.redis_url)
     use Rack::Session::Moneta, :store => Moneta.new(:Redis,
                                                     :host => uri.host,
                                                     :port => uri.port,

@@ -78,6 +78,10 @@ help of redis-objects gem.
 updating campaign's banners based on the performance. Mostly because it seems to
 be the standard solution and it is supported by Heroku.
 
+* To avoid having a banner served twice in a row for a unique visitor we store
+last displayed banner id in user's session. Redis-based session (facilitated by
+Moneta gem) is used in order to keep the cookies size small.
+
 --------------------------------------------------------------------------------
 
 Installation:

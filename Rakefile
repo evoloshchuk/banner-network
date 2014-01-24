@@ -32,7 +32,7 @@ task :spec do
 end
 
 # Configure warmup task.
-task "warmup" do
+task :warmup do
   require_relative 'jobs/update'
   quarter = 1 + Time.now.min / 15
   root = Dir.pwd
