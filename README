@@ -90,7 +90,7 @@ Installation:
 2) Install latest RubyGems - http://rubygems.org/pages/download
 3) $ gem install bundler
 4) $ git clone git@github.com:evoloshchuk/banner-network.git target
-5) cd target
+5) $ cd target
 6) $ bundle install
 7) $ rake warmup
 8) $ foreman start
